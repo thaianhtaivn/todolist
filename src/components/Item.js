@@ -5,6 +5,13 @@ class Item extends Component {
     this.state = {
 
     };
+    this.onClickDelete = this.onClickDelete.bind(this);
+  }
+  onClickDelete(id){
+    this.props.handleDelete(id);
+  }
+  onClickEdit(id){
+    this.props.handleDelete(id);
   }
   render(){
     let item=this.props.item;
@@ -20,8 +27,8 @@ class Item extends Component {
           <td className="text text-info">{item.name}</td>
           <td className="text-center">{elmLevel}</td>
           <td>
-            <button type="button" className="btn btn-warning">Edit</button>
-            <button type="button" className="btn btn-danger">Delete</button>
+            <button onClick = {()=>this.onClickEdit(index)} type="button" className="btn btn-warning">Edit</button>
+            <button onClick = {()=>this.onClickDelete(index)}type="button" className="btn btn-danger">Delete</button>
           </td>
         </tr>
 

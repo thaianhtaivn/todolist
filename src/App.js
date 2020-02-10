@@ -4,7 +4,7 @@ import Title from './components/Title';
 import Control from './components/Control';
 import Form from './components/Form';
 import List from './components/List';
-import _ from 'lodash';
+import {filter, includes, orderBy as funcOrderBy, remove, reject } from 'lodash';
 
 class App extends Component {
   constructor(props) {
@@ -32,6 +32,10 @@ class App extends Component {
     this.handleToggleForm = this.handleToggleForm.bind(this);
     this.handleToggleCancel = this.handleToggleCancel.bind(this);
     this.handleToggleSearch = this.handleToggleSearch.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
+    this.handleEdit = this.handleEdit.bind(this);
+    this.handleToggleSubmit = this.handleToggleSubmit.bind(this);
+
 
   }
   handleToggleForm(){
@@ -43,15 +47,35 @@ class App extends Component {
   handleToggleSearch(value){
     this.setState({strSearch: value});
   }
+  handleDelete(id){
+    let items = this.state.items;
+
+    remove(items, items[id]);
+    this.setState({items: items});
+
+  }
+  handleEdit(id){
+    console.log(id);
+  }
+  handleToggleSubmit(item){
+    let items = this.state.items;
+    items.push({
+      name: item.name,
+      level: +item.level
+    });
+    this.setState({items: items});
+    console.log(items);
+  }
   render(){
     let items=[];
     let itemsOrigin = this.state.items;
-    items = _.filter(itemsOrigin, (item) => {
-      return _.includes(item.name.toLowerCase(), this.state.strSearch.toLowerCase());
+    items=filter(itemsOrigin, (item) => {
+      return includes(item.name.toLowerCase(), this.state.strSearch.toLowerCase());
     });
     let isShowForm = this.state.isShowForm;
     let elmForm = null;
-    if(isShowForm) {elmForm = <Form onClickCancel = {this.handleToggleCancel}/>}
+    if(isShowForm) {elmForm = <Form handleCancel = {this.handleToggleCancel}
+                                    handleSubmit = {this.handleToggleSubmit} />}
     return (
       <div className = "container">
         <Title/>
@@ -61,7 +85,9 @@ class App extends Component {
           isShowForm = {isShowForm}
         />
           {elmForm}
-        <List items={items}/>
+        <List items={items}
+              handleDelete = {this.handleDelete}
+              handleEdit = {this.handleEdit} />
       </div>
 
     );

@@ -7,11 +7,15 @@ class List extends Component {
 
     };
   }
+
   render(){
     let items = this.props.items;
     let elmItem = items.map((item, index) =>{
       return(
-        <Item  key={index} item={item} index={index}/>
+        <Item key={index} item={item} index={index}
+              handleDelete = {this.props.handleDelete}
+              handleEdit = {this.props.handleEdit}
+              />
       );
     });
     return (
